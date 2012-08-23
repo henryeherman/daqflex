@@ -1,0 +1,12 @@
+Download and install libusb
+	http://www.libusb.org/
+	./configure --prefix=/local/dir/libusb-built/
+	make
+	make install
+
+Set environment variables for libusb
+	setenv PKG_CONFIG_PATH libusb-built/lib/pkgconfig
+	setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:libusb-built/lib
+
+Make daqflex
+	make
