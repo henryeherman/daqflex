@@ -1,3 +1,5 @@
+This is a C++ library for driving MCC DAQ devices on Linux.  
+
 Download and install libusb
 	http://www.libusb.org/
 	./configure --prefix=/local/dir/libusb-built/
