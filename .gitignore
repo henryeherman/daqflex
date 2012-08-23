@@ -1,3 +1,6 @@
+# C++ Files
+*.o
+
 # Other Unecessary System files
 *~
 *.log
