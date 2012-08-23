@@ -9,13 +9,15 @@
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
+#include <libusb.h>
 
 #include "mccdevice.h"
 #include "datatypesandstatics.h"
 #include "databuffer.h"
+//#include "libusb.h"
 
 //Constants for this device
-#define DEVICE USB_1608_GX_2AO
+#define DEVICE USB_1608_FS_PLUS
 
 #define FILENAME "testfile.csv"
 
@@ -74,8 +76,8 @@ int main(int argc, char *argv[])
         device->flushInputData();
 
         //Configure an input scan
-        //device->sendMessage("AISCAN:XFRMODE=BLOCKIO"); //Good for fast acquisitions
-        device->sendMessage("AISCAN:XFRMODE=SINGLEIO"); //Good for slow acquisitions
+        device->sendMessage("AISCAN:XFRMODE=BLOCKIO"); //Good for fast acquisitions
+        //device->sendMessage("AISCAN:XFRMODE=SINGLEIO"); //Good for slow acquisitions
 
         device->sendMessage("AISCAN:RANGE=BIP10V");//Set the voltage range on the device
         minVoltage = -10;//Set range for scaling purposes

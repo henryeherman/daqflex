@@ -12,6 +12,7 @@
 #define USB_7204 0x00F0
 #define USB_1608_GX 0x0111
 #define USB_1608_GX_2AO 0x0112
+#define USB_1608_FS_PLUS 0x00EA
 
 #define FIRMWAREPATH "/usr/lib/daqflex/"
 
@@ -39,6 +40,7 @@ enum mcc_err{
     MCC_ERR_INVALID_BUFFER_SIZE,
     MCC_ERR_CANT_OPEN_FPGA_FILE,
     MCC_ERR_FPGA_UPLOAD_FAILED,
+    MCC_ERR_ACCESS,
 };
 
 //Convert a libusb error code into an mcc_err
@@ -64,6 +66,8 @@ static string errorString(int err)
 
     switch(err)
     {
+    	case MCC_ERR_ACCESS:
+    		return "Insufficient USB permisions\n";
         case MCC_ERR_NO_DEVICE:
             return "No Matching Device Found\n";
         case MCC_ERR_INVALID_ID:
@@ -102,6 +106,8 @@ static string toNameString(int idProduct)
             return "USB-1608GX";
         case USB_1608_GX_2AO:
             return "USB-1608GX-2AO";
+        case USB_1608_FS_PLUS:
+        	return "USB-1608-FS-PLUS";
         default:
             return "Invalid Product ID";
     }
@@ -113,7 +119,7 @@ static bool isMCCProduct(int idProduct)
     switch(idProduct)
     {
         case USB_2001_TC: case USB_7202: case USB_7204:
-        case USB_1608_GX: case USB_1608_GX_2AO://same for all products
+        case USB_1608_FS_PLUS: case USB_1608_GX: case USB_1608_GX_2AO://same for all products
             return true;
         default:
             return false;

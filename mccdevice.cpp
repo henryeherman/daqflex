@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+//#include "libusb.h"
 #include <libusb.h>
 
 #include "mccdevice.h"
@@ -21,9 +22,8 @@ MCCDevice::MCCDevice(int idProduct)
     libusb_device* device;
 
     //Check if the product ID is a valid MCC product ID
-    if(!isMCCProduct(idProduct)) {
-	throw MCC_ERR_INVALID_ID;
-	}
+    if(!isMCCProduct(idProduct))
+        throw MCC_ERR_INVALID_ID;
 
     //Initialize USB libraries
     if(libusb_init(NULL) != 0)
@@ -41,12 +41,12 @@ MCCDevice::MCCDevice(int idProduct)
         libusb_get_device_descriptor(device, &desc);
         if(desc.idVendor == MCC_VENDOR_ID && desc.idProduct == idProduct)
         {
-            found = true;
+            //found = true;
             cout << "Found " << toNameString(idProduct) << "\n";
 
             //Open the device
             if(!libusb_open(device, &dev_handle))
-            {
+            {        	
                 //Claim interface with the device
                 if(!libusb_claim_interface(dev_handle,0))
                 {
@@ -55,6 +55,8 @@ MCCDevice::MCCDevice(int idProduct)
                     found = true;
                 }
             }
+            else
+            	throw MCC_ERR_ACCESS;
         }
     }
 
@@ -211,6 +213,11 @@ void MCCDevice::initDevice()
             maxCounts = 0xFFF;
 
             break;
+            
+      	case USB_1608_FS_PLUS:
+      		maxCounts = 0xFFFF;
+      		
+      		break;
 
         default:
             break;
