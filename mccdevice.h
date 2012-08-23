@@ -1,0 +1,73 @@
+#ifndef MCCDEVICE_H
+#define MCCDEVICE_H
+
+#include <libusb.h>
+#include <string>
+#include <exception>
+
+#include "pollingthread.h"
+#include "datatypesandstatics.h"
+#include "databuffer.h"
+
+#define STRINGMESSAGE 0x80
+#define FPGADATAREQUEST 0x51
+#define RAWDATA 0x81
+
+#define MAX_MESSAGE_LENGTH 64
+
+class intTransferInfo
+{
+    public:
+        intTransferInfo(){};
+        unsigned short* dataptr;
+};
+
+using namespace std;
+
+class MCCDevice
+{
+    public:
+        MCCDevice(int idProduct);
+        MCCDevice(int idProduct, string mfgSerialNumber);
+        ~MCCDevice();
+
+        string sendMessage(string message);
+        void readScanData(unsigned short* data, int length, int rate);
+        void flushInputData();
+
+        void startContinuousTransfer(unsigned int rate, dataBuffer* buffer);
+        void stopContinuousTransfer();
+
+        static short calData(unsigned short data, int slope, int offset);
+        float scaleAndCalibrateData(unsigned short data, float minVoltage, float maxVoltage, float scale, float offset);
+
+    private:
+        pollingThread * pollThread;
+        unsigned char endpoint_in;
+        unsigned char endpoint_out;
+        libusb_device_handle* dev_handle;
+        libusb_device ** list;
+        libusb_transfer* transfer;
+        intTransferInfo* transferInfo;
+        int idProduct;
+        unsigned short maxCounts;
+        unsigned short bulkPacketSize;
+
+        void sendControlTransfer(string message);
+        string getControlTransfer();
+
+        void initDevice();
+        void transferFPGAfile(string path);
+
+        static unsigned int getNumRanges();
+
+        threadArg* continuousInfo;
+        static void transferCallbackFunction(struct libusb_transfer *transfer);
+
+        void getScanParams();
+        static unsigned short getBulkPacketSize(unsigned char* data, int data_length);
+        static unsigned char getEndpointInAddress(unsigned char* data, int data_length);
+        static unsigned char getEndpointOutAddress(unsigned char* data, int data_length);
+};
+
+#endif // MCCDEVICE

@@ -1,0 +1,131 @@
+# depslib dependency file v1.0
+1321308951 source:/home/dfraska/Programming/C++/1608GXtest/main.cpp
+	<fstream>
+	<iostream>
+	<sstream>
+	<string>
+	<stdio.h>
+	<termios.h>
+	<unistd.h>
+	"mccdevice.h"
+	"datatypesandstatics.h"
+	"databuffer.h"
+
+1321308817 /home/dfraska/Programming/C++/1608GXtest/mccdevice.h
+	<libusb.h>
+	<string>
+	<exception>
+	"pollingthread.h"
+	"datatypesandstatics.h"
+	"databuffer.h"
+
+1321306930 /home/dfraska/Programming/C++/1608GXtest/pollingthread.h
+	<libusb.h>
+	<pthread.h>
+	"datatypesandstatics.h"
+	"databuffer.h"
+
+1321308582 /home/dfraska/Programming/C++/1608GXtest/datatypesandstatics.h
+	<string>
+	<sstream>
+
+1279113954 /home/dfraska/Programming/C++/1608GXtest/databuffer.h
+
+1321308771 source:/home/dfraska/Programming/C++/1608GXtest/mccdevice.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<libusb.h>
+	"mccdevice.h"
+	"pollingthread.h"
+	"datatypesandstatics.h"
+	"databuffer.h"
+	"stringutil.h"
+
+1321306918 source:/home/dfraska/Programming/C++/1608GXtest/pollingthread.cpp
+	<pthread.h>
+	<libusb.h>
+	<errno.h>
+	<iostream>
+	"pollingthread.h"
+	"mccdevice.h"
+	"datatypesandstatics.h"
+	"databuffer.h"
+
+1321305649 source:/home/dfraska/Programming/C++/1608GXtest/stringutil.cpp
+	"stringutil.h"
+	<string>
+	<ctype.h>
+
+1321306354 /home/dfraska/Programming/C++/1608GXtest/stringutil.h
+	<string>
+
+1335189252 source:/home/dfraska/Programming/C++/DAQFlex_libusb/main.cpp
+	<fstream>
+	<iostream>
+	<sstream>
+	<string>
+	<stdio.h>
+	<termios.h>
+	<unistd.h>
+	"mccdevice.h"
+	"datatypesandstatics.h"
+	"databuffer.h"
+
+1341846774 /home/dfraska/Programming/C++/DAQFlex_libusb/mccdevice.h
+	"libusb.h"
+	<string>
+	<exception>
+	"pollingthread.h"
+	"datatypesandstatics.h"
+	"databuffer.h"
+
+1341846782 /home/dfraska/Programming/C++/DAQFlex_libusb/pollingthread.h
+	"libusb.h"
+	<pthread.h>
+	"datatypesandstatics.h"
+	"databuffer.h"
+
+1324566962 /home/dfraska/Programming/C++/DAQFlex_libusb/datatypesandstatics.h
+	<string>
+	<sstream>
+
+1279113954 /home/dfraska/Programming/C++/DAQFlex_libusb/databuffer.h
+
+1341846819 source:/home/dfraska/Programming/C++/DAQFlex_libusb/mccdevice.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"libusb.h"
+	"mccdevice.h"
+	"pollingthread.h"
+	"datatypesandstatics.h"
+	"databuffer.h"
+	"stringutil.h"
+
+1321306354 /home/dfraska/Programming/C++/DAQFlex_libusb/stringutil.h
+	<string>
+
+1341846830 source:/home/dfraska/Programming/C++/DAQFlex_libusb/pollingthread.cpp
+	<pthread.h>
+	"libusb.h"
+	<errno.h>
+	<iostream>
+	"pollingthread.h"
+	"mccdevice.h"
+	"datatypesandstatics.h"
+	"databuffer.h"
+
+1321305648 source:/home/dfraska/Programming/C++/DAQFlex_libusb/stringutil.cpp
+	"stringutil.h"
+	<string>
+	<ctype.h>
+
+1334904267 /home/dfraska/Programming/C++/DAQFlex_libusb/libusb.h
+	<stdint.h>
+	<sys/types.h>
+	<time.h>
+	<limits.h>
+	<sys/time.h>
+	<windows.h>
+

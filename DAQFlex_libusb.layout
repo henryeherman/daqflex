@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="datatypesandstatics.h" open="0" top="0" tabpos="2">
+		<Cursor position="926" topLine="34" />
+	</File>
+	<File name="libusb.h" open="0" top="0" tabpos="0">
+		<Cursor position="29432" topLine="948" />
+	</File>
+	<File name="main.cpp" open="1" top="1" tabpos="0">
+		<Cursor position="3331" topLine="68" />
+	</File>
+	<File name="mccdevice.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="10184" topLine="351" />
+	</File>
+	<File name="mccdevice.h" open="0" top="0" tabpos="2">
+		<Cursor position="1795" topLine="42" />
+	</File>
+	<File name="pollingthread.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="188" topLine="0" />
+	</File>
+	<File name="pollingthread.h" open="0" top="0" tabpos="0">
+		<Cursor position="68" topLine="0" />
+	</File>
+	<File name="stringutil.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="203" topLine="6" />
+	</File>
+	<File name="stringutil.h" open="0" top="0" tabpos="0">
+		<Cursor position="114" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>
