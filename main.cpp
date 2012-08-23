@@ -39,15 +39,15 @@ MCCDevice* device;
 
 int main(int argc, char *argv[])
 {
+    // TODO: Why can't do only 1 channel?
     unsigned int lowChan = 0;
     unsigned int highChan = 1;
     unsigned int numChans = highChan-lowChan+1;
-
-    int rate = 100;
+    int rate = 22050;
 
     //numSamples * numChans must be an
     //integer multiple of 32 for a continuous scan
-    int numSamples = 64; //Half of the buffer will be handled at a time.
+    int numSamples = 320; //Half of the buffer will be handled at a time.
     dataBuffer* buffer;
     bool lastHalfRead = SECONDHALF;
 
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 
         //Start collecting data in the background
         //Data buffer info will be stored in the buffer object
-        device->startContinuousTransfer(rate, buffer);
+        device->startContinuousTransfer(rate, buffer, numSamples);
     }
     catch(mcc_err err)
     {
@@ -136,8 +136,9 @@ int main(int argc, char *argv[])
     cout << "Done\n";
 
     device->sendMessage("AISCAN:STOP");
+    cout << "HELLO\n";
     device->stopContinuousTransfer();
-
+  
     //close the output file
     outputFile.close();
 
@@ -160,18 +161,18 @@ void displayAndWriteData(unsigned short* data, int transferred, int numChans, of
             //Scale the data
             fixedData = device->scaleAndCalibrateData(data[currentData], minVoltage, maxVoltage, calSlope[currentChan], calOffset[currentChan]);
 
-            if(j<numToDisplay)//Limit console output to a few points for a cleaner display
-                cout << fixedData << ",";
+            //if(j<numToDisplay)//Limit console output to a few points for a cleaner display
+                //cout << fixedData << ",";
             //Output all data to a csv file
             *outputFile << fixedData << ",";
             currentData++;
         }
         *outputFile << "\n";
-        if(j<numToDisplay)
-        cout << "\n";
+        //if(j<numToDisplay)
+        //cout << "\n";
     }
 
-    cout << "\n";
+    // cout << "\n";
 }
 
 //Cal constants are only valid for the current set range.

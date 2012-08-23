@@ -290,8 +290,11 @@ void MCCDevice::sendControlTransfer(string message)
     for (uint16_t i = 0; i < MAX_MESSAGE_LENGTH; i++) {
         data[i] = (i < length) ? msgData[i] : 0;
     }
+    cout << ";lskdjfl;skjdf\n";
     numBytesTransferred = libusb_control_transfer(dev_handle, LIBUSB_REQUEST_TYPE_VENDOR + LIBUSB_ENDPOINT_OUT,
                                                   STRINGMESSAGE, 0, 0, data, MAX_MESSAGE_LENGTH, 1000);
+
+    
     if(numBytesTransferred < 0)
         throw libUSBError(numBytesTransferred);
 }
@@ -336,7 +339,7 @@ void MCCDevice::readScanData(unsigned short* data, int length, int rate)
         throw libUSBError(err);
 }
 
-void MCCDevice::startContinuousTransfer(unsigned int rate, dataBuffer* buffer)
+void MCCDevice::startContinuousTransfer(unsigned int rate, dataBuffer* buffer, int samps)
 {
     continuousInfo = new threadArg;
 
@@ -344,6 +347,7 @@ void MCCDevice::startContinuousTransfer(unsigned int rate, dataBuffer* buffer)
     continuousInfo->endpoint_in = endpoint_in;
     continuousInfo->rate = rate;
     continuousInfo->buffer = buffer;
+    continuousInfo->numSamples = samps;
 
     pollThread = new pollingThread(continuousInfo);
     pollThread->start();

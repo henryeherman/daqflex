@@ -12,6 +12,7 @@ typedef struct _threadArg
     unsigned char endpoint_in;
     unsigned int rate;
     dataBuffer* buffer;
+    int numSamples;
 } threadArg;
 
 class pollingThread

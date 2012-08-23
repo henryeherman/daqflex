@@ -53,7 +53,7 @@ void pollingThread::execute()
     unsigned int timeout = 2000000/(64*argPtr->rate);
 
     while (1){
-        err =  libusb_bulk_transfer(argPtr->dev_handle, argPtr->endpoint_in, &dataAsByte[argPtr->buffer->currIndex*2], 64, &transferred, timeout);
+        err =  libusb_bulk_transfer(argPtr->dev_handle, argPtr->endpoint_in, &dataAsByte[argPtr->buffer->currIndex*2], argPtr->numSamples, &transferred, timeout);
         argPtr->buffer->currIndex += (transferred/2);
         argPtr->buffer->currCount += (transferred/2);
         if(err == LIBUSB_ERROR_TIMEOUT && transferred > 0)//a timeout may indicate that some data was transferred, but not all
