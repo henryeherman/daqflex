@@ -19,7 +19,7 @@
 //Constants for this device
 #define DEVICE USB_1608_FS_PLUS
 
-#define FILENAME "/local/ehanson/testfile.csv"
+#define FILENAME "testfile.csv"
 
 //Class declarations
 template<class T> T fromString(const std::string& s);
@@ -39,15 +39,18 @@ MCCDevice* device;
 
 int main(int argc, char *argv[])
 {
-    // TODO: Why can't do only 1 channel?
+    // TODO: Handle multiple DAQ Devices
+    // TODO: Calcualte optimal buffer size at all frequencies
+    // TODO: Get it working under EPICS!!!
     unsigned int lowChan = 0;
-    unsigned int highChan = 1;
+    unsigned int highChan = 7;
     unsigned int numChans = highChan-lowChan+1;
-    int rate = 22050;
+    int rate = 2048;
+    int counter = 0;
 
     //numSamples * numChans must be an
     //integer multiple of 32 for a continuous scan
-    int numSamples = 320; //Half of the buffer will be handled at a time.
+    int numSamples = 64; //Half of the buffer will be handled at a time.
     dataBuffer* buffer;
     bool lastHalfRead = SECONDHALF;
 
@@ -97,11 +100,12 @@ int main(int argc, char *argv[])
         //Fill cal constants for later use
         fillCalConstants(lowChan, highChan);
 
-        device->sendMessage("AISCAN:START");//Start the scan on the device
-
-        //Start collecting data in the background
+        device->sendMessage("AISCAN:START");//Start the scan on the device   
+  
+	//Start collecting data in the background
         //Data buffer info will be stored in the buffer object
-        device->startContinuousTransfer(rate, buffer, numSamples);
+        device->startContinuousTransfer(rate, buffer, buffer->getNumPoints());
+
     }
     catch(mcc_err err)
     {
@@ -123,14 +127,19 @@ int main(int argc, char *argv[])
         {
             //cout << "First Half Ready\n";
             displayAndWriteData(buffer->data, buffer->getNumPoints()/2, numChans, &outputFile);
+            cout << "Transfer " << counter << "\n";
             lastHalfRead = FIRSTHALF;
+            counter++;
         }
         else if ((buffer->currIndex < buffer->getNumPoints()/2) && (lastHalfRead == FIRSTHALF))
         {
             //cout << "Second Half Ready\n";
             displayAndWriteData(&buffer->data[buffer->getNumPoints()/2], buffer->getNumPoints()/2, numChans, &outputFile);
+            cout << "Transfer " << counter << "\n";
             lastHalfRead = SECONDHALF;
+            counter++;
         }
+	//sleep(1);
     }
 
     cout << "Done\n";
@@ -154,10 +163,9 @@ void displayAndWriteData(unsigned short* data, int transferred, int numChans, of
 {
     int currentChan, j, currentData=0;
     float fixedData;
-    int numToDisplay = 10;
 
-    cout << "Data (" << transferred/numChans << " transferred, displaying first " << numToDisplay << "):\n";
-    for(j=0; j < transferred/2; j++)
+    //for(j=0; j < transferred/2; j++)
+    while (currentData < transferred)
     {
         for(currentChan=0; currentChan < numChans; currentChan++)
         {
