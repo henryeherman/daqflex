@@ -19,7 +19,7 @@
 //Constants for this device
 #define DEVICE USB_1608_FS_PLUS
 
-#define FILENAME "testfile.csv"
+#define FILENAME "/local/ehanson/testfile.csv"
 
 //Class declarations
 template<class T> T fromString(const std::string& s);
@@ -43,14 +43,14 @@ int main(int argc, char *argv[])
     // TODO: Calcualte optimal buffer size at all frequencies
     // TODO: Get it working under EPICS!!!
     unsigned int lowChan = 0;
-    unsigned int highChan = 7;
+    unsigned int highChan = 0;
     unsigned int numChans = highChan-lowChan+1;
-    int rate = 2048;
+    int rate = 44100;
     int counter = 0;
 
     //numSamples * numChans must be an
     //integer multiple of 32 for a continuous scan
-    int numSamples = 64; //Half of the buffer will be handled at a time.
+    int numSamples = 3200; //Half of the buffer will be handled at a time.
     dataBuffer* buffer;
     bool lastHalfRead = SECONDHALF;
 
@@ -102,9 +102,9 @@ int main(int argc, char *argv[])
 
         device->sendMessage("AISCAN:START");//Start the scan on the device   
   
-	//Start collecting data in the background
+		//Start collecting data in the background
         //Data buffer info will be stored in the buffer object
-        device->startContinuousTransfer(rate, buffer, buffer->getNumPoints());
+        device->startContinuousTransfer(rate, buffer, buffer->getNumPoints()/2);
 
     }
     catch(mcc_err err)
@@ -139,7 +139,6 @@ int main(int argc, char *argv[])
             lastHalfRead = SECONDHALF;
             counter++;
         }
-	//sleep(1);
     }
 
     cout << "Done\n";
@@ -182,7 +181,7 @@ void displayAndWriteData(unsigned short* data, int transferred, int numChans, of
         //if(j<numToDisplay)
         //cout << "\n";
     }
-
+	cout << "Transfered="<<transferred<<" : Total="<<currentData<<endl;
     // cout << "\n";
 }
 
