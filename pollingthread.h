@@ -27,9 +27,11 @@ class pollingThread
         void execute();
 
         threadArg * argPtr;
-
         pthread_t thread_;
 
         static void mSleep(unsigned int msec);
+        
+        //some bools to help with thread closing
+        bool thread_alive, ret;
 };
 #endif

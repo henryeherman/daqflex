@@ -19,7 +19,7 @@
 //Constants for this device
 #define DEVICE USB_1608_FS_PLUS
 
-#define FILENAME "testfile.csv"
+#define FILENAME "/local/ehanson/testfile.csv"
 
 //Class declarations
 template<class T> T fromString(const std::string& s);
@@ -134,16 +134,19 @@ int main(int argc, char *argv[])
     }
 
     cout << "Done\n";
-
-    device->sendMessage("AISCAN:STOP");
-    cout << "HELLO\n";
     device->stopContinuousTransfer();
-  
+    device->sendMessage("AISCAN:STOP");
+	
+    
     //close the output file
     outputFile.close();
 
     //delete the device and buffer ensuring proper cleanup
+    delete buffer;
+    delete calSlope;
+    delete calOffset;
     delete device;
+    
     return 0;
 }
 

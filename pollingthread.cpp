@@ -13,6 +13,8 @@ using namespace std;
 pollingThread::pollingThread(threadArg* arg)
 {
     argPtr = arg;
+    thread_alive = true;
+    ret = false;
 }
 
 int pollingThread::start()
@@ -23,8 +25,11 @@ int pollingThread::start()
 
 int pollingThread::stop()
 {
-    int code = pthread_cancel(thread_);
-    return code;
+	thread_alive = false;
+    //int code = pthread_cancel(thread_);
+    //return code;
+    while(!ret) {}
+	return 0;
 }
 
 /*static */
@@ -37,6 +42,7 @@ void pollingThread::run()
 {
     try{
         execute();
+        return;
     }
     catch(mcc_err err)
     {
@@ -50,9 +56,9 @@ void pollingThread::execute()
     argPtr->buffer->currIndex = 0;
 
     unsigned char* dataAsByte = (unsigned char*)argPtr->buffer->data;
-    unsigned int timeout = 2000000/(64*argPtr->rate);
+    unsigned int timeout = 2000000;///(64*argPtr->rate);
 
-    while (1){
+    while (thread_alive){
         err =  libusb_bulk_transfer(argPtr->dev_handle, argPtr->endpoint_in, &dataAsByte[argPtr->buffer->currIndex*2], argPtr->numSamples, &transferred, timeout);
         argPtr->buffer->currIndex += (transferred/2);
         argPtr->buffer->currCount += (transferred/2);
@@ -65,4 +71,5 @@ void pollingThread::execute()
             argPtr->buffer->currIndex = 0;
         }
     }
+    ret = true;
 }

@@ -290,7 +290,7 @@ void MCCDevice::sendControlTransfer(string message)
     for (uint16_t i = 0; i < MAX_MESSAGE_LENGTH; i++) {
         data[i] = (i < length) ? msgData[i] : 0;
     }
-    cout << ";lskdjfl;skjdf\n";
+    
     numBytesTransferred = libusb_control_transfer(dev_handle, LIBUSB_REQUEST_TYPE_VENDOR + LIBUSB_ENDPOINT_OUT,
                                                   STRINGMESSAGE, 0, 0, data, MAX_MESSAGE_LENGTH, 1000);
 
@@ -325,7 +325,7 @@ void MCCDevice::readScanData(unsigned short* data, int length, int rate)
 {
     int err = 0, totalTransferred = 0, transferred;
     unsigned char* dataAsByte = (unsigned char*)data;
-    unsigned int timeout = 2000000/(bulkPacketSize*rate);
+    unsigned int timeout = 2000000;///(bulkPacketSize*rate);
 
     do{
         err =  libusb_bulk_transfer(dev_handle, endpoint_in, &dataAsByte[totalTransferred], bulkPacketSize, &transferred, timeout);
