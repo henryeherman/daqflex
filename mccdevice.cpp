@@ -339,7 +339,7 @@ void MCCDevice::readScanData(unsigned short* data, int length, int rate)
         throw libUSBError(err);
 }
 
-void MCCDevice::startContinuousTransfer(unsigned int rate, dataBuffer* buffer, int samps)
+void MCCDevice::startContinuousTransfer(unsigned int rate, dataBuffer* buffer, int samps, double delay)
 {
     continuousInfo = new threadArg;
 
@@ -348,6 +348,7 @@ void MCCDevice::startContinuousTransfer(unsigned int rate, dataBuffer* buffer, i
     continuousInfo->rate = rate;
     continuousInfo->buffer = buffer;
     continuousInfo->numSamples = samps;
+	continuousInfo->delay = delay;
 
     pollThread = new pollingThread(continuousInfo);
     pollThread->start();

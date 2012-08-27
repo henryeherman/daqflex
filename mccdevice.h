@@ -35,7 +35,7 @@ class MCCDevice
         void readScanData(unsigned short* data, int length, int rate);
         void flushInputData();
 
-        void startContinuousTransfer(unsigned int rate, dataBuffer* buffer, int samps);
+        void startContinuousTransfer(unsigned int rate, dataBuffer* buffer, int samps, double delay);
         void stopContinuousTransfer();
 
         static short calData(unsigned short data, int slope, int offset);
