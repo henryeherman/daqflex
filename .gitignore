@@ -1,7 +1,12 @@
 # Project-specific files
+# Include this Makefile once the project is no longer in development
 Makefile
+# Built binary
 daq
+# Data taking files
 *.csv
+# core dump files
+core
 
 # C++ Files
 *.o
