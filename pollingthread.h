@@ -13,6 +13,7 @@ typedef struct _threadArg
     unsigned int rate;
     dataBuffer* buffer;
     int numSamples;
+    double delay;
 } threadArg;
 
 class pollingThread

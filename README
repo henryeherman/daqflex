@@ -11,4 +11,5 @@ Set environment variables for libusb
 	setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:libusb-built/lib
 
 Make daqflex
+	Change the FILENAME define in main.cpp to wherever you would like the output file to be located
 	make

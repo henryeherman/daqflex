@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     unsigned int lowChan = 0;
     unsigned int highChan = 0;
     unsigned int numChans = highChan-lowChan+1;
-    int rate = 44100;
+    int rate = 2048;
     int counter = 0;
 
     //numSamples * numChans must be an
@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
     int numSamples = 3200; //Half of the buffer will be handled at a time.
     dataBuffer* buffer;
     bool lastHalfRead = SECONDHALF;
+	double delay = (numSamples*100000)/(numChans*rate*2);
 
     string response;
     stringstream strLowChan, strHighChan, strRate, strNumSamples,
@@ -104,7 +105,7 @@ int main(int argc, char *argv[])
   
 		//Start collecting data in the background
         //Data buffer info will be stored in the buffer object
-        device->startContinuousTransfer(rate, buffer, buffer->getNumPoints()/2);
+        device->startContinuousTransfer(rate, buffer, buffer->getNumPoints()/2, delay);
 
     }
     catch(mcc_err err)
@@ -115,11 +116,11 @@ int main(int argc, char *argv[])
     }
 
     cout << "Press enter to exit\n";
-
+    
     while(!kbhit())
     {
         //Main loop of program
-
+		usleep(delay);
         //Data is placed into a circular buffer
         //Make sure to check buffer often enough so that you do not lose data
         //Only half the buffer is read at a time to avoid collisions
@@ -127,23 +128,36 @@ int main(int argc, char *argv[])
         {
             //cout << "First Half Ready\n";
             displayAndWriteData(buffer->data, buffer->getNumPoints()/2, numChans, &outputFile);
-            cout << "Transfer " << counter << "\n";
+            //cout << "Transfer " << counter << "\n";
             lastHalfRead = FIRSTHALF;
+            
+            //blinkLED if every 10 buffer reads
+            /*if (counter%10==0)
+        		device->sendMessage("DEV:FLASHLED/1");*/
+            
             counter++;
         }
         else if ((buffer->currIndex < buffer->getNumPoints()/2) && (lastHalfRead == FIRSTHALF))
         {
             //cout << "Second Half Ready\n";
             displayAndWriteData(&buffer->data[buffer->getNumPoints()/2], buffer->getNumPoints()/2, numChans, &outputFile);
-            cout << "Transfer " << counter << "\n";
+            //cout << "Transfer " << counter << "\n";
             lastHalfRead = SECONDHALF;
+            
+            //blinkLed every 10 buffer reads
+            /*if (counter%10==0)
+        		device->sendMessage("DEV:FLASHLED/1");*/
+            
             counter++;
         }
     }
 
-    cout << "Done\n";
+    //cout << "Done\n";
     device->stopContinuousTransfer();
     device->sendMessage("AISCAN:STOP");
+    
+    //check status for debugging purposes
+    //device->sendMessage("?AISCAN:STATUS");
 	
     
     //close the output file
@@ -181,7 +195,7 @@ void displayAndWriteData(unsigned short* data, int transferred, int numChans, of
         //if(j<numToDisplay)
         //cout << "\n";
     }
-	cout << "Transfered="<<transferred<<" : Total="<<currentData<<endl;
+	//cout << "Transfered="<<transferred<<" : Total="<<currentData<<endl;
     // cout << "\n";
 }
 
@@ -209,7 +223,7 @@ void fillCalConstants(unsigned int lowChan, unsigned int highChan)
         response = device->sendMessage(strCalOffset.str());
         calOffset[currentChan] = fromString<float>(response.erase(0,13));
 
-        cout << "Channel " << currentChan << " Calibration Slope: " << calSlope[currentChan] << " Offset: " << calOffset[currentChan] << "\n";
+        cout << "Channel " << currentChan << " Calibration Slope: " << calSlope[currentChan] << " Offset: " << calOffset[currentChan] << "\n\n";
     }
 }
 
