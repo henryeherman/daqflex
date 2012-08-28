@@ -17,4 +17,7 @@ Make daqflex
 	-Change the FILENAME define in main.cpp to wherever you would like the output file to be located
 		NOTE: choose a local location, it doesn't seem to write well to network drives
 	-Change the LIBUSB_PATH variable in the Makefile to point to your local installation of libusb (libusb-built folder)
+    -Device settings such as scan rate and channels selection can also be set in variables in main.cpp
 	-make
+
+If you run the daq executable on a machine without any elevated permissions, you will receive an insufficient permissions error.  This is because libusb needs elevated permissions to access the USB port correctly.  To solve this, ask IT to give you sudo permissions on the daq executable.  
