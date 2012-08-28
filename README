@@ -1,4 +1,6 @@
 This is a C++ library for driving MCC DAQ devices on Linux.  
+The original code from Measurement Computing was found here: ftp://ftp.measurementcomputing.com/downloads/example_programs/DAQFlex/Linux%20C++/
+This code was 
 
 Download and install libusb
 	http://www.libusb.org/
@@ -12,4 +14,8 @@ Set environment variables for libusb
 
 Make daqflex
 	Change the FILENAME define in main.cpp to wherever you would like the output file to be located
-	make
+	Device settings such as scan rate and channels can also be set in main.cpp.  
+	A Makefile should be included in the repository which should build the project.
+	Now simply build it: make
+
+On the standard Argonne Red Hat machines, you will receive an insufficient permissions error.  This is because libusb needs elevated permissions to access the USB port correctly.  To solve this, ask IT to give you sudo permissions on the daq executable.  
