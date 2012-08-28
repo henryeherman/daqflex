@@ -1,21 +1,20 @@
 This is a C++ library for driving MCC DAQ devices on Linux.  
-The original code from Measurement Computing was found here: ftp://ftp.measurementcomputing.com/downloads/example_programs/DAQFlex/Linux%20C++/
-This code was 
 
 Download and install libusb
-	http://www.libusb.org/
-	./configure --prefix=/local/dir/libusb-built/
-	make
-	make install
+	-http://www.libusb.org/
+	-./configure --prefix=/local/dir/libusb-built/
+	-make
+	-make install
+	
+	-NOTE: 	The existing installation of libusb on the APS RedHat machines did not work for us, although future updates
+			may fix that. Changes to the Makefile and source files would be necessary to use the system installation though.
 
 Set environment variables for libusb
-	setenv PKG_CONFIG_PATH libusb-built/lib/pkgconfig
-	setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:libusb-built/lib
+	-setenv PKG_CONFIG_PATH libusb-built/lib/pkgconfig
+	-setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:libusb-built/lib
 
 Make daqflex
-	Change the FILENAME define in main.cpp to wherever you would like the output file to be located
-	Device settings such as scan rate and channels can also be set in main.cpp.  
-	A Makefile should be included in the repository which should build the project.
-	Now simply build it: make
-
-On the standard Argonne Red Hat machines, you will receive an insufficient permissions error.  This is because libusb needs elevated permissions to access the USB port correctly.  To solve this, ask IT to give you sudo permissions on the daq executable.  
+	-Change the FILENAME define in main.cpp to wherever you would like the output file to be located
+		NOTE: choose a local location, it doesn't seem to write well to network drives
+	-Change the LIBUSB_PATH variable in the Makefile to point to your local installation of libusb (libusb-built folder)
+	-make
